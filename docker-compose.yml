@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: app
+    restart: always
+  
+  nginx:
+    image: nginx:1.19.8-alpine
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx-conf.d:/etc/nginx/conf.d
+    restart: always
+  
+  certbot:
+    image: certbot/certbot
+    depends_on:
+      - nginx
+    container_name: certbot
+    volumes:
+      - ./nginx/etc/letsencrypt:/etc/letsencrypt
+      - ./nginx/www-html:/var/www/html
+    command: certonly --webroot --webroot-path=/var/www/html --email andrey2455@gmail.com --agree-tos --no-eff-email -d xn----7sbbjhyumfdet1r.xn--p1ai
+    restart: always

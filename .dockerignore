@@ -1,0 +1,10 @@
+Dockerfile
+.dockerignore
+node_modules/         # Installed inside container
+npm-debug.log
+.next/                # Existing Next.js builds
+.git/
+.gitignore
+nginx/
+README.md
+out
